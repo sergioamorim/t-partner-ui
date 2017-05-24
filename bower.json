@@ -1,0 +1,30 @@
+{
+  "name": "t-partner-ui",
+  "description": "T-Partner web user interface",
+  "main": "js/app.js",
+  "authors": [
+    "Sergio Amorim <sata@ic.ufal.br> (https://github.com/sergioamorim/)"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "t-partner",
+    "tpartner",
+    "tp",
+    "t-partner-ui",
+    "tpartnerui",
+    "tpartner-ui",
+    "tp-ui",
+    "tpui"
+  ],
+  "homepage": "https://github.com/sergioamorim/t-partner-ui",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.4"
+  }
+}
