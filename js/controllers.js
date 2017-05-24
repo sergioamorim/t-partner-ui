@@ -1,0 +1,1 @@
+angular.module('controllers', []).controller('SummaryController', summary_controller);
