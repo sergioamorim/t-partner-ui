@@ -1,10 +1,9 @@
 <div ng-controller="SummaryController">
 	<h2>Summary</h2>
-    <form>
-        <input ng-model="requestData.studentId" type="number" ngMinlength="1" ngRequired="true" required />
-        <input ng-model="requestData.dateStart" type="date" placeholder="dd-MM-yyyy" min="2000-01-01" max="{{requestData.dateEnd | date: yyyy-MM-dd}}" ngRequired="true" required />
-        <input ng-model="requestData.dateEnd" type="date" placeholder="dd-MM-yyyy" min="{{requestData.dateStart | date: yyyy-MM-dd}}" max="2099-12-31" ngRequired="true" required />
-        <input type="submit" ng-click="requestSummary(requestData)" value="Go" />
+    <form class="form-group">
+        <span ng-dropdown-multiselect="" options="students" selected-model="requestData.selectedStudents" extra-settings="studentDropdownSettings"></span>
+        <input date-range-picker class="form-control date-picker" type="text" ng-model="requestData" options="daterangepickerOptions"/>
+        <input class="form-control btn-primary" type="submit" ng-click="requestSummary(requestData)" value="Go" />
     </form>
     <div ng-show="totalSummaryData != undefined">
         <div>
