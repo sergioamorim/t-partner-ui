@@ -1,7 +1,15 @@
 angular.module("TP").factory("summaryAPI", function($http, config){
 	
 	var _getSummary = function(requestData){
-		return $http.post(config.baseUrl+"/student/summary", resquestData);
+        var req = {
+            method: 'POST',
+            url: config.baseUrl+'/student/summary',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: requestData
+        }
+        return $http(req);
 	}
 	
 	return {

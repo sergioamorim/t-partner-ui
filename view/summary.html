@@ -1,8 +1,8 @@
 <div ng-controller="SummaryController">
 	<h2>Summary</h2>
     <form class="form-group">
-        <span ng-dropdown-multiselect="" options="students" selected-model="requestData.selectedStudents" extra-settings="studentDropdownSettings"></span>
-        <input date-range-picker class="form-control date-picker" type="text" ng-model="requestData" options="daterangepickerOptions"/>
+        <span ng-dropdown-multiselect="" options="students" selected-model="requestData.students" extra-settings="studentDropdownSettings"></span>
+        <input date-range-picker class="form-control date-picker" type="text" ng-model="daterangepicker.daterange" options="daterangepicker.options"/>
         <input class="form-control btn-primary" type="submit" ng-click="requestSummary(requestData)" value="Go" />
     </form>
     <div ng-show="totalSummaryData != undefined">

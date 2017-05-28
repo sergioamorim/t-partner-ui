@@ -4,17 +4,30 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
         startDate: null,
         endDate: null
     };
-    $scope.daterangepickerOptions = {
-        locale: {
-            format: 'dddd, MMMM Do YYYY'
+
+    $scope.daterangepicker = {
+        daterange: {
+            startDate: null,
+            endDate: null
         },
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        options: {
+            locale: {
+                format: 'dddd, MMMM Do YYYY'
+            },
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            eventHandlers: {
+                'hide.daterangepicker': function() {
+                    $scope.requestData.startDate = $scope.daterangepicker.daterange.startDate;
+                    $scope.requestData.endDate = $scope.daterangepicker.daterange.endDate;
+                }
+            }
         }
     }
     $scope.summaryData = [];
@@ -40,7 +53,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
     $scope.requestSummary = function(requestData) {
         requestDateFormat = "yyyy-MM-dd";
         startDate = requestData.startDate;
-        endDateOriginal = new Date(requestData.endDate.add(1, 'day'));
+        endDateOriginal = requestData.endDate.clone().add(1, 'day');
         if (endDateOriginal - startDate >= 1209600000) {
             $scope.summaryInterval = "month";
             while (startDate.clone().add(1, 'month') <= endDateOriginal) {
