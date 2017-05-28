@@ -6,7 +6,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
     };
     $scope.daterangepickerOptions = {
         locale: {
-            format: 'MMMM D, YYYY'
+            format: 'dddd, MMMM Do YYYY'
         },
         ranges: {
            'Today': [moment(), moment()],
@@ -41,44 +41,44 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
     $scope.requestSummary = function(requestData) {
         requestDateFormat = "yyyy-MM-dd";
         startDate = requestData.startDate;
-        endDateOriginal = new Date(requestData.endDate.valueOf()+86400000);
+        endDateOriginal = new Date(requestData.endDate.add(1, 'day'));
         if (endDateOriginal - startDate >= 1209600000) {
             $scope.summaryInterval = "month";
-            while (startDate.valueOf() + 2592000000 <= endDateOriginal) {
-                endDate = startDate.valueOf() + 2592000000;
+            while (startDate.clone().add(1, 'month') <= endDateOriginal) {
+                endDate = startDate.clone().add(1, 'month');
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
                 summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data) {
                     $scope.summaryData.push(data);
                 });
-                startDate = new Date(startDate.valueOf()+2592000000);
+                startDate.add(1, 'month');
             }
         }
         else if (endDateOriginal - startDate >= 5011200000) {
             $scope.summaryInterval = "week";
-            while (startDate.valueOf() + 604800000 <= endDateOriginal) {
-                endDate = startDate.valueOf() + 604800000;
+            while (startDate.clone().add(1, 'week') <= endDateOriginal) {
+                endDate = startDate.clone().add(1, 'week');
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
                 summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data){
                     $scope.summaryData.push(data);
                 });
-                startDate = new Date(startDate.valueOf()+604800000);
+                startDate.add(1, 'week');
             }
         }
         else if (endDateOriginal - startDate > 172800000) {
             $scope.summaryInterval = "day";
-            while (startDate.valueOf() + 86400000 <= endDateOriginal) {
-                endDate = startDate.valueOf() + 86400000;
+            while (startDate.clone().add(1, 'day') <= endDateOriginal) {
+                endDate = startDate.clone().add(1, 'day');
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
                 summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data) {
                     $scope.summaryData.push(data);
                 });
-                startDate = new Date(startDate.valueOf()+86400000);
+                startDate.add(1, 'day');
             }
         }
         summaryAPI.getSummary(requestData.studentId, $filter('date')(requestData.startDate, requestDateFormat), $filter('date')(endDateOriginal, requestDateFormat)).success(function(data){
