@@ -1,6 +1,6 @@
 function summary_controller($scope, $filter, summaryAPI, studentAPI) {
     $scope.requestData = {
-        selectedStudents: [],
+        students: [],
         startDate: null,
         endDate: null
     };
@@ -21,7 +21,6 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
     studentAPI.getStudents().then(function(data) {
         $scope.students = data.data;
     });
-    $scope.selectedStudents = [];
     $scope.studentDropdownSettings = {
         displayProp: "id",
         enableSearch: true,
@@ -49,7 +48,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data) {
+                summaryAPI.getSummary(requestData).success(function(data) {
                     $scope.summaryData.push(data);
                 });
                 startDate.add(1, 'month');
@@ -62,7 +61,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data){
+                summaryAPI.getSummary(requestData).success(function(data){
                     $scope.summaryData.push(data);
                 });
                 startDate.add(1, 'week');
@@ -75,13 +74,13 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData.studentId, $filter('date')(startDate, requestDateFormat), $filter('date')(endDate, requestDateFormat)).success(function(data) {
+                summaryAPI.getSummary(requestData).success(function(data) {
                     $scope.summaryData.push(data);
                 });
                 startDate.add(1, 'day');
             }
         }
-        summaryAPI.getSummary(requestData.studentId, $filter('date')(requestData.startDate, requestDateFormat), $filter('date')(endDateOriginal, requestDateFormat)).success(function(data){
+        summaryAPI.getSummary(requestData).success(function(data){
             $scope.totalSummaryData = data;
         });
     };
