@@ -61,9 +61,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData).success(function(data) {
-                    $scope.summaryData.push(data);
-                });
+                $scope.summaryData.push(summaryAPI.getSummaries(requestData));
                 startDate.add(1, 'month');
             }
         }
@@ -74,9 +72,7 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData).success(function(data){
-                    $scope.summaryData.push(data);
-                });
+                $scope.summaryData.push(summaryAPI.getSummaries(requestData));
                 startDate.add(1, 'week');
             }
         }
@@ -87,15 +83,11 @@ function summary_controller($scope, $filter, summaryAPI, studentAPI) {
                 if (endDate > endDateOriginal) {
                     endDate = endDateOriginal;
                 }
-                summaryAPI.getSummary(requestData).success(function(data) {
-                    $scope.summaryData.push(data);
-                });
+                $scope.summaryData.push(summaryAPI.getSummaries(requestData));
                 startDate.add(1, 'day');
             }
         }
-        summaryAPI.getSummary(requestData).success(function(data){
-            $scope.totalSummaryData = data;
-        });
+        $scope.totalSummaryData = summaryAPI.getSummaries(requestData);
     };
     $scope.showLearningGoals = function(learningGoals) {
         ModalService.showModal({
