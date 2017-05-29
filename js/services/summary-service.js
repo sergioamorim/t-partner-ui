@@ -1,6 +1,6 @@
 angular.module("TP").factory("summaryAPI", function($http, config){
 	
-	var _getSummary = function(requestData){
+	var _getSummaries = function(requestData){
         var req = {
             method: 'POST',
             url: config.baseUrl+'/student/summary',
@@ -9,10 +9,15 @@ angular.module("TP").factory("summaryAPI", function($http, config){
             },
             data: requestData
         }
-        return $http(req);
+        $http(req).then(function successCallback(response) {
+            return response.data;
+        }, function errorCallback(response) {
+            console.log(response);
+            return null;
+        });
 	}
 	
 	return {
-		getSummary: _getSummary
+		getSummaries: _getSummaries
 	}
 });
