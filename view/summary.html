@@ -34,7 +34,7 @@
                 Actions per access: {{ totalSummaryData.actionsPerSubSessionAverage | number : 1 }} <br />
             </span>
         </div>
-        <div ng-repeat="summaryDataField in summaryData | orderBy: 'timeStart'">
+        <div ng-repeat="summaryDataField in summaryData | orderBy: 'startDate'">
             <hr />
             <div>
                 <span ng-show="summaryInterval == 'day'">Day: </span>
