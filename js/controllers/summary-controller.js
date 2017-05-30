@@ -91,18 +91,26 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) 
             modal.close();
         });
     };
-    $scope.open = function () {
-        $uibModal.open({
-            animation: true,
-            backdrop: false,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'view/modals/actions-modal.html',
-            controller: 'SummaryController',
-            controllerAs: '$ctrl',
-            bindToController: true,
-            size: 'lg',
-            appendTo: 'body',
-        });
+    $scope.modals = {
+        actions: {
+            open: function (actionsT) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    backdrop: false,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'view/modals/actions-modal.html',
+                    controller: 'ActionsModalController',
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    size: 'lg',
+                    resolve: {
+                        actions: function(){
+                            return actionsT;
+                        }
+                    }
+                });
+            }
+        }
     }
 }

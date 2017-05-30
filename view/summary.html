@@ -1,11 +1,11 @@
 <div ng-controller="SummaryController">
-	<h2>Summary</h2>
+    <h2>Summary</h2>
     <form class="form-group">
         <span ng-dropdown-multiselect="" options="students" selected-model="requestData.students" extra-settings="studentDropdownSettings"></span>
         <input date-range-picker class="form-control date-picker" type="text" ng-model="daterangepicker.daterange" options="daterangepicker.options"/>
         <input class="form-control btn-primary" type="submit" ng-click="clearData();requestSummaries(requestData)" value="Go" />
     </form>
-    Monday, June 1st 2015 - Tuesday, June 30th 2015
+    <a href="" ng-click="modals.actions.open()">Monday, June 1st 2015 - Tuesday, June 30th 2015</a>
     <div ng-show="completeSummaries != undefined">
         <div ng-repeat="completeSummary in completeSummaries">
             <h3>Student {{completeSummary.student.id}}</h3>
@@ -29,8 +29,8 @@
                     New levels reached: {{ completeSummary.newLevelsReached }} <br />
                     Last level reached: {{ completeSummary.lastLevelReached.replace('http://meututor.com.br/Ontologies/MeuTutor.Gamification.Instances.owl#Level_', 'level ') }} <br />
                     Dummy tests questions done: {{ completeSummary.dummyTestQuestionsDone }} <br />
-                    Learning goals reached: <a href="" ng-click="open()"> {{ completeSummary.learningGoalsReachedTotal }} </a> <br />
-                    Actions: {{ completeSummary.studentActionsTotal }} <br />
+                    Learning goals reached: {{ completeSummary.learningGoalsReachedTotal }} <br />
+                    Actions: <a href="" ng-click="modals.actions.open(completeSummary.studentActionsTrackedJson)"> {{ completeSummary.studentActionsTotal }} </a><br />
                     Access: {{ completeSummary.subSessionsTotal }} <br />
                     Actions per access: {{ completeSummary.actionsPerSubSessionAverage | number : 1 }} <br />
                 </span>
