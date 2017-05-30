@@ -3,12 +3,12 @@
     <form class="form-group">
         <span ng-dropdown-multiselect="" options="students" selected-model="requestData.students" extra-settings="studentDropdownSettings"></span>
         <input date-range-picker class="form-control date-picker" type="text" ng-model="daterangepicker.daterange" options="daterangepicker.options"/>
-        <input class="form-control btn-primary" type="submit" ng-click="requestSummaries(requestData)" value="Go" />
+        <input class="form-control btn-primary" type="submit" ng-click="clearData();requestSummaries(requestData)" value="Go" />
     </form>
-    Friday, May 1st 2015 - Thursday, December 31st 2015
+    Monday, June 1st 2015 - Tuesday, June 30th 2015
     <div ng-show="completeSummaries != undefined">
         <div ng-repeat="completeSummary in completeSummaries">
-            <h3>Student: {{completeSummary.student.id}}</h3>
+            <h3>Student {{completeSummary.student.id}}</h3>
             <div>
                 <h4>Complete summary:</h4>
                 <span ng-show="completeSummary.studentActionsTotal == 0">nothing</span>
@@ -29,7 +29,7 @@
                     New levels reached: {{ completeSummary.newLevelsReached }} <br />
                     Last level reached: {{ completeSummary.lastLevelReached.replace('http://meututor.com.br/Ontologies/MeuTutor.Gamification.Instances.owl#Level_', 'level ') }} <br />
                     Dummy tests questions done: {{ completeSummary.dummyTestQuestionsDone }} <br />
-                    Learning goals reached: <a href="" ng-click="showLearningGoals(completeSummary.learningGoalsReachedTrackedJson)"> {{ completeSummary.learningGoalsReachedTotal }} </a> <br />
+                    Learning goals reached: <a href="" ng-click="open()"> {{ completeSummary.learningGoalsReachedTotal }} </a> <br />
                     Actions: {{ completeSummary.studentActionsTotal }} <br />
                     Access: {{ completeSummary.subSessionsTotal }} <br />
                     Actions per access: {{ completeSummary.actionsPerSubSessionAverage | number : 1 }} <br />
@@ -37,12 +37,12 @@
             </div>
         </div>
         <div ng-repeat="summary in summaries">
-            <h3>Student: {{summary.student.id}}</h3>
             <div ng-repeat="summaryField in summary | orderBy: 'startDate'">
+                <h3>Student: {{summaryField.student.id}}</h3>
                 <hr />
-                <h4 ng-show="summaryInterval == 'day'">Day: {{ summaryField.timeStart | date: 'fullDate' }}</h4>
-                <h4 ng-show="summaryInterval == 'week'">Week: {{ summaryField.timeStart | date: 'fullDate' }}</h4>
-                <h4 ng-show="summaryInterval == 'month'">Month: {{ summaryField.timeStart | date: 'fullDate' }}</h4>
+                <h4 ng-show="summariesInterval == 'day'">{{ summaryField.timeStart | date: 'fullDate' }}</h4>
+                <h4 ng-show="summariesInterval == 'week'">Week starting on {{ summaryField.timeStart | date: 'fullDate' }}</h4>
+                <h4 ng-show="summariesInterval == 'month'">Month starting on {{ summaryField.timeStart | date: 'fullDate' }}</h4>
                 <span ng-show="summaryField.studentActionsTotal == 0">nothing</span>
                 <span ng-show="summaryField.studentActionsTotal != 0">
                     Questions hits: {{ summaryField.hitsTotal }} <br />

@@ -1,4 +1,4 @@
-function summary_controller($scope, $filter, $timeout, summaryAPI, studentAPI) {
+function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) {
     $scope.requestData = {
         students: [],
         startDate: null,
@@ -49,35 +49,36 @@ function summary_controller($scope, $filter, $timeout, summaryAPI, studentAPI) {
         $scope.summaries = [];
         $scope.completeSummaries = undefined;
         $scope.summariesInterval = undefined;
-    }
+    };
+    $scope.getSummariesFraction = function (requestData, endDateOriginal) {
+        if (requestData.startDate.isBefore(endDateOriginal) || requestData.startDate.isSame(endDateOriginal)) {
+            requestData.endDate = requestData.startDate.clone().add(1, $scope.summariesInterval);
+            if (requestData.endDate > endDateOriginal) {
+                requestData.endDate = endDateOriginal;
+            }
+            summaryAPI.getSummaries(requestData).then(function(response){
+                $scope.summaries.push(response.data);
+                requestData.startDate.add(1, $scope.summariesInterval);
+                $scope.getSummariesFraction(requestData, endDateOriginal);
+            });
+        }
+    };
     $scope.requestSummaries = function(requestData) {
-        summaryAPI.getSummaries(requestData).then(function(response) {
-            $scope.completeSummaries = response.data;
-        });
-        $timeout(function() {
-            console.log(requestData);
+        summaryAPI.getSummaries(requestData).then(function(response){
             endDateOriginal = requestData.endDate;
-            if (endDateOriginal - requestData.startDate >= 1209600000) {
+            $scope.completeSummaries = response.data;
+            if (requestData.endDate - requestData.startDate >= 5011200000) {
                 $scope.summariesInterval = 'month';
             }
-            else if (endDateOriginal - requestData.startDate >= 5011200000) {
+            else if (requestData.endDate - requestData.startDate >= 1209600000) {
                 $scope.summariesInterval = 'week';
             }
-            else if (endDateOriginal - requestData.startDate > 172800000) {
+            else if (requestData.endDate - requestData.startDate > 172800000) {
                 $scope.summariesInterval = 'day';
             }
-            while (requestData.startDate.clone().add(1, $scope.summariesInterval).isBefore(endDateOriginal)) {
-                requestData.endDate = requestData.startDate.clone().add(1, $scope.summariesInterval);
-                if (requestData.endDate > endDateOriginal) {
-                    requestData.endDate = endDateOriginal;
-                }
-                summaryAPI.getSummaries(requestData).then(function(response) {
-                    $scope.summaries.push(response.data);
-                });
-                requestData.startDate.add(1, $scope.summariesInterval);
-            }
-        }, 3000);
-    }
+            $scope.getSummariesFraction(requestData, endDateOriginal);
+        });
+    };
     $scope.showLearningGoals = function(learningGoals) {
         ModalService.showModal({
             templateUrl: '../../view/modals/learning-goals-modal.html',
@@ -90,5 +91,18 @@ function summary_controller($scope, $filter, $timeout, summaryAPI, studentAPI) {
             modal.close();
         });
     };
-
+    $scope.open = function () {
+        $uibModal.open({
+            animation: true,
+            backdrop: false,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'view/modals/actions-modal.html',
+            controller: 'SummaryController',
+            controllerAs: '$ctrl',
+            bindToController: true,
+            size: 'lg',
+            appendTo: 'body',
+        });
+    }
 }
