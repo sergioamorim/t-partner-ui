@@ -1,11 +1,52 @@
-<div ng-controller="SummaryController">
-    <h2>Summary</h2>
-    <form class="form-group">
-        <span ng-dropdown-multiselect="" options="students" selected-model="requestData.students" extra-settings="studentDropdownSettings"></span>
-        <input date-range-picker class="form-control date-picker" type="text" ng-model="daterangepicker.daterange" options="daterangepicker.options"/>
-        <input class="form-control btn-primary" type="submit" ng-click="clearData();requestSummaries(requestData)" value="Go" />
+<div ng-controller="SummaryController"
+     class="container">
+    <div class="row">
+        <h2>Summary</h2>
+    </div>
+    <form id="summary-request"
+          class="form-group">
+        <div ng-show="!requestedSummaries" class="row justify-content-center">
+            <div class="col">
+                <label for="students"
+                       form="summary-request">Students</label>
+                <div style="width:500px;" id="students"
+                     ng-dropdown-multiselect=""
+                     options="students"
+                     selected-model="requestData.students"
+                     extra-settings="studentDropdownSettings">
+                </div>
+            </div>
+            <div class="col">
+                <label for="date-range"
+                       form="summary-request">Date range</label>
+                <input id="date-range"
+                       form="summary-request"
+                       date-range-picker class="form-control date-picker"
+                       type="text"
+                       ng-model="daterangepicker.daterange"
+                       options="daterangepicker.options"
+                       ng-required="true"/>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <input ng-show="requestedSummaries"
+                       id="go"
+                       form="summary-request"
+                       class="form-control btn-primary"
+                       type="submit"
+                       ng-click="reload()"
+                       value="<- Back" />
+                <input ng-show="!requestedSummaries"
+                       id="go"
+                       form="summary-request"
+                       class="form-control btn-primary"
+                       type="submit"
+                       ng-click="requestSummaries(requestData)"
+                       value="Go" />
+            </div>
+        </div>
     </form>
-    <span class="clickable" ng-click="modals.actions.open()">Monday, June 1st 2015 - Tuesday, June 30th 2015</span>
     <div ng-show="completeSummaries != undefined">
         <div ng-repeat="completeSummary in completeSummaries">
             <h3>Student {{completeSummary.student.id}}</h3>
@@ -30,7 +71,8 @@
                     Last level reached: {{ completeSummary.lastLevelReached.replace('http://meututor.com.br/Ontologies/MeuTutor.Gamification.Instances.owl#Level_', 'level ') }} <br />
                     Dummy tests questions done: {{ completeSummary.dummyTestQuestionsDone }} <br />
                     Learning goals reached: {{ completeSummary.learningGoalsReachedTotal }} <br />
-                    Actions: <span class="clickable" ng-click="modals.actions.open(completeSummary.studentActionsTracked)"> {{ completeSummary.studentActionsTotal }} </span><br />
+                    Actions: <span class="clickable"
+                                   ng-click="modals.actions.open(completeSummary.studentActionsTracked)"> {{ completeSummary.studentActionsTotal }} </span><br />
                     Access: {{ completeSummary.subSessionsTotal }} <br />
                     Actions per access: {{ completeSummary.actionsPerSubSessionAverage | number : 1 }} <br />
                 </span>
@@ -62,7 +104,8 @@
                     Last level reached: {{ summaryField.lastLevelReached.replace('http://meututor.com.br/Ontologies/MeuTutor.Gamification.Instances.owl#Level_', 'level ') }} <br />
                     Dummy tests questions done: {{ summaryField.dummyTestQuestionsDone }} <br />
                     Learning goals reached: {{ summaryField.learningGoalsReachedTotal }} <br />
-                    Actions: {{ summaryField.studentActionsTotal }} <br />
+                    Actions: <span class="clickable"
+                                   ng-click="modals.actions.open(summaryField.studentActionsTracked)"> {{ summaryField.studentActionsTotal }} </span> <br />
                     Access: {{ summaryField.subSessionsTotal }} <br />
                     Actions per access: {{ summaryField.actionsPerSubSessionAverage | number : 1 }}
                 </span>

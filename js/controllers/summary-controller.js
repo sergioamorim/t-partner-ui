@@ -1,4 +1,4 @@
-function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, config) {
+function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, studentAPI, config) {
     $scope.config = config;
     $scope.requestData = {
         students: [],
@@ -21,7 +21,8 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, 
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'Last 2 Months': [moment().subtract(2, 'month').startOf('month'), moment().endOf('month')]
+                'Last 2 Months': [moment().subtract(2, 'month').startOf('month'), moment().endOf('month')],
+                'Test': [moment().set({'year': 2015, 'month': 4, 'date': 1}), moment().set({'year': 2015, 'month': 11, 'date': 31})]
             },
             eventHandlers: {
                 'hide.daterangepicker': function() {
@@ -46,10 +47,8 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, 
     };
     $scope.completeSummaries = undefined;
     $scope.summariesInterval = undefined;
-    $scope.clearData = function() {
-        $scope.summaries = [];
-        $scope.completeSummaries = undefined;
-        $scope.summariesInterval = undefined;
+    $scope.reload = function() {
+        $route.reload();
     };
     $scope.getSummariesFraction = function (requestData, endDateOriginal) {
         if (requestData.startDate.isBefore(endDateOriginal) || requestData.startDate.isSame(endDateOriginal)) {
@@ -64,6 +63,7 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, 
             });
         }
     };
+    $scope.requestedSummaries = false;
     $scope.requestSummaries = function(requestData) {
         summaryAPI.getSummaries(requestData).then(function(response){
             endDateOriginal = requestData.endDate;
@@ -79,6 +79,7 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, 
             }
             $scope.getSummariesFraction(requestData, endDateOriginal);
         });
+        $scope.requestedSummaries = true;
     };
     $scope.showLearningGoals = function(learningGoals) {
         ModalService.showModal({
