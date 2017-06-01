@@ -1,0 +1,5 @@
+.modal-close {
+    position: fixed;
+    right: 2%;
+    cursor: pointer;
+}
