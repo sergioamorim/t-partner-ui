@@ -3,3 +3,13 @@
     right: 2%;
     cursor: pointer;
 }
+.clickable {
+    color: dodgerblue;
+    cursor: pointer;
+}
+.clickable:hover {
+    color: deepskyblue;
+}
+.clickable:active {
+    color: skyblue;
+}
