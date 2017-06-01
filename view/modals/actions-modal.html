@@ -1,15 +1,20 @@
 <div class="modal-header">
     <span class="fa fa-times fa-lg modal-close" ng-click="ok()"></span>
-    <h3 class="modal-title" id="modal-title">Student {{actions[0].student.id}} actions</h3>
+    <h3 class="modal-title" id="modal-title">Student {{actions[0].subSession.accessSession.student.id}} actions</h3>
 </div>
-<div class="modal-body" id="modal-body">
-    <div ng-repeat="action in actions | orderBy: 'time' track by $index">
-        <div ng-show="$index == 0 || action.subSession.id != actions[$index-1].subSession.id">
+<div class="modal-body container-fluid" id="modal-body">
+    <div class="row" ng-repeat="action in actions | orderBy: 'time' track by $index">
+        <div class="col-sm-12"ng-if="$index == 0 || action.subSession.id != actions[$index-1].subSession.id">
             <h4>
                 Access on {{getGreetingTime(action.subSession.timeStart)}}
             </h4>
         </div>
-        {{actionBeautyfy(action)}}
+        <div class="col-sm-3">
+            {{config.dict.studentAction.type[action.type]}}
+        </div>
+        <div class="col-sm-3">
+            {{action.time | amDateFormat: config.format.date.summaryModal.studentAction}}
+        </div>
     </div>
 </div>
 <div class="modal-footer">
