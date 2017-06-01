@@ -20,3 +20,10 @@
 .clickable:active {
     color: skyblue;
 }
+
+.truncate-sm-3 {
+  width: 224.5156173706054px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
