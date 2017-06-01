@@ -40,9 +40,9 @@
             <div ng-repeat="summaryField in summary | orderBy: 'startDate'">
                 <h3>Student: {{summaryField.student.id}}</h3>
                 <hr />
-                <h4 ng-show="summariesInterval == 'day'">{{ summaryField.timeStart | date: 'fullDate' }}</h4>
-                <h4 ng-show="summariesInterval == 'week'">Week starting on {{ summaryField.timeStart | date: 'fullDate' }}</h4>
-                <h4 ng-show="summariesInterval == 'month'">Month starting on {{ summaryField.timeStart | date: 'fullDate' }}</h4>
+                <h4 ng-show="summariesInterval == 'day'">{{ summaryField.timeStart | date: config.format.date.summary.startingDay }}</h4>
+                <h4 ng-show="summariesInterval == 'week'">Week starting on {{ summaryField.timeStart | date: config.format.date.summary.startingDay }}</h4>
+                <h4 ng-show="summariesInterval == 'month'">Month starting on {{ summaryField.timeStart | date: config.format.date.summary.startingDay }}</h4>
                 <span ng-show="summaryField.studentActionsTotal == 0">nothing</span>
                 <span ng-show="summaryField.studentActionsTotal != 0">
                     Questions hits: {{ summaryField.hitsTotal }} <br />

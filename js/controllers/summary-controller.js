@@ -1,4 +1,5 @@
-function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) {
+function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI, config) {
+    $scope.config = config;
     $scope.requestData = {
         students: [],
         startDate: null,
@@ -11,7 +12,7 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) 
         },
         options: {
             locale: {
-                format: 'dddd, MMMM Do YYYY'
+                format: config.format.date.summary.daterangepicker
             },
             ranges: {
                 'Today': [moment(), moment()],
@@ -35,7 +36,7 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) 
         $scope.students = data.data;
     });
     $scope.studentDropdownSettings = {
-        displayProp: "id",
+        displayProp: 'id',
         enableSearch: true,
         scrollable: true,
         smartButtonMaxItems: 3,
@@ -82,7 +83,7 @@ function summary_controller($scope, $filter, $uibModal, summaryAPI, studentAPI) 
     $scope.showLearningGoals = function(learningGoals) {
         ModalService.showModal({
             templateUrl: '../../view/modals/learning-goals-modal.html',
-            controller: "LearningGoalsModal",
+            controller: 'LearningGoalsModal',
             inputs: {
                 data: learningGoals
             }
