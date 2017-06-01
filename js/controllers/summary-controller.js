@@ -93,9 +93,27 @@ function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, stud
             modal.close();
         });
     };
+    $scope.accesses = [];
+    $scope.makeAccesses = function(actions){
+        if (actions.length > 0){
+            var access = {
+                timeStart: actions[0].subSession.timeStart,
+                actions: []
+            };
+            for (i=0; i<actions.length; i++) {
+                if(i != 0 && actions[i].subSesion.id != actions[-1].subSession.id){
+                    break;
+                }
+                access.actions.push(actions[i]);
+            }
+            $scope.accesses.push(access);
+            $scope.makeSessions(actions.splice(i));
+        }
+    };
     $scope.modals = {
         actions: {
-            open: function (actionsT) {
+            open: function (actions) {
+                $scope.makeAccesses(actions);
                 var modalInstance = $uibModal.open({
                     animation: true,
                     backdrop: false,
@@ -107,11 +125,12 @@ function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, stud
                     bindToController: true,
                     size: 'lg',
                     resolve: {
-                        actions: function(){
-                            return actionsT;
+                        accesses: function(){
+                            return $scope.accesses;
                         }
                     }
                 });
+                $scope.accesses = [];
             }
         }
     }
