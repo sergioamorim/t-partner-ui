@@ -74,7 +74,7 @@ function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, stud
             else if (requestData.endDate - requestData.startDate >= 1209600000) {
                 $scope.summariesInterval = 'week';
             }
-            else if (requestData.endDate - requestData.startDate > 172800000) {
+            else {
                 $scope.summariesInterval = 'day';
             }
             $scope.getSummariesFraction(requestData, endDateOriginal);
