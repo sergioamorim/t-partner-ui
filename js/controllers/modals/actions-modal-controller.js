@@ -1,6 +1,6 @@
 function actions_modal_controller($uibModalInstance, $scope, $filter, actions, moment, config) {
     $scope.config = config;
-
+    $scope.actions = actions;
     $scope.getTimeSpent = function(action) {
         if (action.problemResponseTime > 0) {
             return action.problemResponseTime;
@@ -31,9 +31,11 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
                     timeStart: undefined,
                     timeEnd: undefined,
                     timeSpent: moment.duration(0),
+                    showActions: false,
                     actions: []
                 }
                 $scope.accesses.inflateCapsule(capsule, actions);
+                access.capsules.push(capsule);
                 $scope.accesses.inflateAccess(access, actions);
             }
         },
@@ -41,20 +43,25 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
             if (actions.length > 0 && (capsule.actions.length == 0 || capsule.actions[capsule.actions.length-1].type == actions[0].type)) {
                 if (capsule.actions.length == 0) {
                     var timeSpentDuration = moment.duration($scope.getTimeSpent(actions[0]));
-                    capsule.timeStart = moment(actions[0].time).subtract(timeSpentDuration);
+                    capsule.timeStart = moment(actions[0].time);
+                    capsule.timeStart.subtract($scope.getTimeSpent(actions[0])/1000, 'seconds');
                     capsule.type = actions[0].type;
                 }
-                if (actions.length == 1) {
-                    capsule.timeEnd = actions[0].time;
+                if ((actions.length > 1 && actions[1].type != capsule.type) || actions.length == 1) {
+                    capsule.timeEnd = moment(actions[0].time);
                 }
-                capsule.timeSpent.add($scope.getTimeSpent(actions[0]));
+                capsule.timeSpent.add(moment.duration($scope.getTimeSpent(actions[0])/1000, 'seconds'));
                 capsule.actions.push(actions[0]);
                 actions.shift();
                 $scope.accesses.inflateCapsule(capsule, actions);
             }
         }
     };
-    $scope.accesses.make(actions);
+    $scope.accesses.make($scope.actions);
+
+    $scope.toggleShowActions = function(capsule) {
+        capsule.showActions = capsule.showActions === false ? true: false;
+    }
 
     $scope.getGreetingTime = function(m) {
         var t = moment(m);
