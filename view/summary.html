@@ -72,7 +72,7 @@
                     Dummy tests questions done: {{ completeSummary.dummyTestQuestionsDone }} <br />
                     Learning goals reached: {{ completeSummary.learningGoalsReachedTotal }} <br />
                     Actions: <span class="clickable"
-                                   ng-click="accesses.make(completeSummary.studentActionsTracked);modals.actions.open(completeSummary.studentActionsTracked)"> {{ completeSummary.studentActionsTotal }} </span><br />
+                                   ng-click="modals.actions.open(completeSummary.studentActionsTracked)"> {{ completeSummary.studentActionsTotal }} </span><br />
                     Access: {{ completeSummary.subSessionsTotal }} <br />
                     Actions per access: {{ completeSummary.actionsPerSubSessionAverage | number : 1 }} <br />
                 </span>
