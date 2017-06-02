@@ -50,6 +50,7 @@ function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, stud
     $scope.reload = function() {
         $route.reload();
     };
+
     $scope.getSummariesFraction = function (requestData, endDateOriginal) {
         if (requestData.startDate.isBefore(endDateOriginal) || requestData.startDate.isSame(endDateOriginal)) {
             requestData.endDate = requestData.startDate.clone().add(1, $scope.summariesInterval);
@@ -81,39 +82,31 @@ function summary_controller($scope, $filter, $uibModal, $route, summaryAPI, stud
         });
         $scope.requestedSummaries = true;
     };
-    $scope.showLearningGoals = function(learningGoals) {
-        ModalService.showModal({
-            templateUrl: '../../view/modals/learning-goals-modal.html',
-            controller: 'LearningGoalsModal',
-            inputs: {
-                data: learningGoals
+
+    $scope.accesses = {
+        data: [],
+        make: function(actions){
+            if (actions.length > 0){
+                var access = {
+                    timeStart: actions[0].subSession.timeStart,
+                    actions: []
+                };
+                $scope.accesses.inflateAccess(access, actions);
+                $scope.accesses.data.push(access);
+                $scope.accesses.make(actions);
             }
-        }).then(function(modal) {
-            modal.element.modal();
-            modal.close();
-        });
-    };
-    $scope.accesses = [];
-    $scope.makeAccesses = function(actions){
-        if (actions.length > 0){
-            var access = {
-                timeStart: actions[0].subSession.timeStart,
-                actions: []
-            };
-            for (i=0; i<actions.length; i++) {
-                if(i != 0 && actions[i].subSesion.id != actions[-1].subSession.id){
-                    break;
-                }
-                access.actions.push(actions[i]);
+        },
+        inflateAccess: function(access, actions) {
+            if (actions.length > 0 && (access.actions.length == 0 || access.actions[access.actions.length-1].subSession.id == actions[0].subSession.id)) {
+                access.actions.push(actions[0]);
+                actions.shift();
+                $scope.accesses.inflateAccess(access, actions);
             }
-            $scope.accesses.push(access);
-            $scope.makeSessions(actions.splice(i));
         }
     };
     $scope.modals = {
         actions: {
             open: function (actions) {
-                $scope.makeAccesses(actions);
                 var modalInstance = $uibModal.open({
                     animation: true,
                     backdrop: false,
