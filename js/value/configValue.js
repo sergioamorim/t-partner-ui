@@ -7,12 +7,12 @@ angular.module('TP').value('config', {
             type: {
                 PROBLEM_SOLVING: 'Problem solving',
                 CONTENT_VIEW: 'Content view',
-                PROBLEM_BASED_EVALUATION: 'Problem based evaluation solving',
-                LEARNING_GOAL: 'Learning goal reached',
-                RESOURCE_SEQUENCE: 'Mission completed',
-                ACTIVITY_LOOP: 'Activity loop detected',
-                GAMIFICATION_HISTORIC: 'New level reached',
-                DOMAIN_LEARNING_GOAL: 'Domain learning goal reached'
+                PROBLEM_BASED_EVALUATION: 'Problem based evaluation',
+                LEARNING_GOAL: 'Learning goal',
+                RESOURCE_SEQUENCE: 'Resource sequence',
+                ACTIVITY_LOOP: 'Activity loop',
+                GAMIFICATION_HISTORIC: 'Gamification historic',
+                DOMAIN_LEARNING_GOAL: 'Domain learning goal'
             }
         }
     },
