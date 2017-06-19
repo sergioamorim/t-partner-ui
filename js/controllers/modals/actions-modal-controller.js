@@ -1,16 +1,6 @@
 function actions_modal_controller($uibModalInstance, $scope, $filter, actions, moment, config) {
     $scope.config = config;
     $scope.actions = actions;
-    $scope.getTimeSpent = function(action) {
-        if (action.problemResponseTime > 0) {
-            return action.problemResponseTime;
-        } else if (action.contentViewTime > 0) {
-            return action.contentViewTime;
-        } else {
-            return 0;
-        }
-    };
-
     $scope.accesses = {
         data: [],
         make: function(actions){
@@ -42,15 +32,25 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
         inflateCapsule: function(capsule, actions) {
             if (actions.length > 0 && (capsule.actions.length == 0 || capsule.actions[capsule.actions.length-1].type == actions[0].type)) {
                 if (capsule.actions.length == 0) {
-                    var timeSpentDuration = moment.duration($scope.getTimeSpent(actions[0]));
+                    var timeSpentDuration = moment.duration(actions[0].timeSpent);
                     capsule.timeStart = moment(actions[0].time);
-                    capsule.timeStart.subtract($scope.getTimeSpent(actions[0])/1000, 'seconds');
-                    capsule.type = actions[0].type;
+                    capsule.timeStart.subtract(actions[0].timeSpent/1000, 'seconds');
+                    if (actions[0].hasOwnProperty('educationalResource')) {
+                        if (actions[0].hasOwnProperty('correctlyDone')) {
+                            capsule.type = 'PROBLEM_SOLVING';
+                        }
+                        else {
+                            capsule.type = 'CONTENT_VIEW';
+                        }
+                    }
+                    else {
+                        capsule.type = actions[0].type;
+                    }
                 }
                 if ((actions.length > 1 && actions[1].type != capsule.type) || actions.length == 1) {
                     capsule.timeEnd = moment(actions[0].time);
                 }
-                capsule.timeSpent.add(moment.duration($scope.getTimeSpent(actions[0])/1000, 'seconds'));
+                capsule.timeSpent.add(moment.duration(actions[0].timeSpent/1000, 'seconds'));
                 capsule.actions.push(actions[0]);
                 actions.shift();
                 $scope.accesses.inflateCapsule(capsule, actions);
@@ -70,13 +70,11 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
 
 
     $scope.getResource = function(action) {
-        if (action.problemId != '*') {
-            return action.problemId.replace('MultipleChoiceProblem_','');
-        } else if (action.contentId != '*') {
-            return action.contentId.replace('Content_','');
-        } else {
-            return '';
+        if (action.hasOwnProperty('educationalResource')) {
+            var id = action.educationalResource.id.replace('MultipleChoiceProblem_','');
+            return id.replace('Content_','');
         }
+        return '';
     };
 
     $scope.ok = function () {

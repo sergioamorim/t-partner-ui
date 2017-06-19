@@ -45,7 +45,7 @@
                         {{getResource(action)}}
                     </div>
                     <div class="col-sm-3">
-                        <span ng-show="getTimeSpent(action) > 0">{{getTimeSpent(action) | milliSecondsToTimeString}}</span>
+                        <span ng-show="action.timeSpent > 0">{{action.timeSpent | milliSecondsToTimeString}}</span>
                     </div>
                     <div class="col-sm-5">
                         {{action.time | amDateFormat: config.format.date.summaryModal.studentAction}}
