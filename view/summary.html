@@ -54,6 +54,8 @@
                 <h4>Complete summary:</h4>
                 <span ng-show="completeSummary.studentActionsTotal == 0">nothing</span>
                 <span ng-show="completeSummary.studentActionsTotal != 0">
+                    Performance measure: {{ completeSummary.performanceMeasure }}
+                    Score: {{ completeSummary.score }}
                     Questions hits: {{ completeSummary.hitsTotal }} <br />
                     Questions fails: {{ completeSummary.failsTotal }} <br />
                     Problem solving tries: {{ completeSummary.problemsTriedTotal }} <br />
@@ -87,6 +89,8 @@
                 <h4 ng-show="summariesInterval == 'month'">Month starting on {{ summaryField.timeStart | date: config.format.date.summary.startingDay }}</h4>
                 <span ng-show="summaryField.studentActionsTotal == 0">nothing</span>
                 <span ng-show="summaryField.studentActionsTotal != 0">
+                    Performance measure: {{ summaryField.performanceMeasure }}
+                    Score: {{ summaryField.score }}
                     Questions hits: {{ summaryField.hitsTotal }} <br />
                     Questions fails: {{ summaryField.failsTotal }} <br />
                     Problem solving tries: {{ summaryField.problemsTriedTotal }} <br />
