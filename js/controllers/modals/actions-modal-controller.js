@@ -74,6 +74,9 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
             var id = action.educationalResource.id.replace('MultipleChoiceProblem_','');
             return id.replace('Content_','');
         }
+        if (action.type == 'ACTIVITY_LOOP') {
+            return config.dict.studentAction.activityLoop[action.activityLoopId];
+        }
         return '';
     };
 
