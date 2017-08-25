@@ -30,7 +30,7 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
             }
         },
         inflateCapsule: function(capsule, actions) {
-            if (actions.length > 0 && (capsule.actions.length == 0 || capsule.actions[capsule.actions.length-1].type == actions[0].type)) {
+            if (actions.length > 0 && (capsule.actions.length == 0 || (capsule.actions[capsule.actions.length-1].type == actions[0].type && capsule.actions[capsule.actions.length-1].hasOwnProperty('badgeId') == actions[0].hasOwnProperty('badgeId')))) {
                 if (capsule.actions.length == 0) {
                     var timeSpentDuration = moment.duration(actions[0].timeSpent);
                     capsule.timeStart = moment(actions[0].time);
@@ -42,6 +42,9 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
                         else {
                             capsule.type = 'CONTENT_VIEW';
                         }
+                    }
+                    else if (actions[0].hasOwnProperty('badgeId')) {
+                        capsule.type = 'ACTIVITY_LOOP';
                     }
                     else {
                         capsule.type = actions[0].type;
@@ -74,8 +77,8 @@ function actions_modal_controller($uibModalInstance, $scope, $filter, actions, m
             var id = action.educationalResource.id.replace('MultipleChoiceProblem_','');
             return id.replace('Content_','');
         }
-        if (action.type == 'ACTIVITY_LOOP') {
-            return config.dict.studentAction.activityLoop[action.activityLoopId];
+        if (action.hasOwnProperty('badgeId')) {
+            return config.dict.studentAction.activityLoop[action.badgeId];
         }
         return '';
     };
